@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamWeaver AI - Your Emotional Wellness Companion</title>
+    <!-- Fonts -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- AOS for Scroll Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
+            color: #2f2f2f;
+            overflow-x: hidden;
+            transition: opacity 0.5s ease;
+        }
+
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .navbar a {
+            color: #1a1a1a;
+            /* Dark near-black for visibility */
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #4caf50;
+        }
+
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .navbar a {
+            color: #1a1a1a; /* Dark near-black for visibility */
+            transition: color 0.3s ease;
+        }
+        .navbar a:hover {
+            color: #4caf50;
+        }
+
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .geometric-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 50%;
+            animation: pulse 8s infinite ease-in-out;
+        }
+
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+        }
+
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 0.3; }
+        }
+
+        .feature-card {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: #f0f0f0;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #d7d7d7, #b0b0b0);
+            color: #2f2f2f;
+        }
+
+
+        .footer a {
+            color: #2f2f2f;
+        }
+
+        .footer a:hover {
+            color: #4caf50;
+        }
+
+
+        .footer a {
+            color: #2f2f2f;
+        }
+        .footer a:hover {
+            color: #4caf50;
+        }
+
+        #threeCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(76, 175, 80, 0.3);
+            border-radius: 50%;
+            border-top-color: #4caf50;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 10000;
+            transform: translateX(-100%);
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            border-radius: 25px;
+            border: none;
+            background: #4caf50;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 48px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            border-radius: 25px;
+            border: 2px solid #2f2f2f;
+            background: transparent;
+            color: #2f2f2f;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 40px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            border-radius: 25px;
+            border: none;
+            background: #4caf50;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 48px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+
+        /* Social Icons */
+        .social-link {
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 8px;
+            height: 45px;
+            width: 45px;
+            font-size: 18px;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: #4caf50;
+            color: #fff;
+            border-color: #4caf50;
+        }
+
+
+        /* Text Styles */
+        h1,
+        h2,
+        h3 {
+            color: #2f2f2f;
+        }
+
+        p,
+        .text-gray {
+            color: #666;
+        }
+
+
+        /* Text Styles */
+        h1, h2, h3 {
+            color: #2f2f2f;
+        }
+        p, .text-gray {
+            color: #666;
+        }
+
+        /* Updated Login Button Styles */
+        .btn-login {
+            border-radius: 25px 100px;
+            border: none;
+            background: #4caf50;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+
+            padding: 10px 40px;
+
+            padding: 12px 48px;
+
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #3d8b40, #4caf50, #5cb860);
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+
+
+        .btn-login:hover {
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-login:hover::before {
+            background: linear-gradient(45deg, #5cb860, #4caf50, #3d8b40);
+        }
+
+
+        .btn-login:hover {
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        }
+        .btn-login:hover::before {
+            background: linear-gradient(45deg, #5cb860, #4caf50, #3d8b40);
+        }
+
+        .btn-login:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        #login-btn:hover {
+            color: #1a1a1a;
+        }
+
+        .navbar {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+
+        }
+
+        .navbar a,
+        .navbar span,
+        .navbar i {
+            color: rgb(0, 0, 0);
+            /* or black, depending on background */
+        }
+
+    
+          .navbar a, .navbar span, .navbar i {
+            color: rgb(0, 0, 0); /* or black, depending on background */
+          }
+                    
+
+    </style>
+</head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuButton = document.querySelector("button.md\\:hidden");
+        const navLinks = document.querySelector(".md\\:flex");
+
+
+
+    
+
+        menuButton.addEventListener("click", () => {
+            navLinks.classList.toggle("hidden");
+            navLinks.classList.toggle("flex");
+            navLinks.classList.toggle("flex-col");
+            navLinks.classList.toggle("absolute");
+            navLinks.classList.toggle("top-full");
+            navLinks.classList.toggle("bg-white");
+            navLinks.classList.toggle("left-0");
+            navLinks.classList.toggle("w-full");
+            navLinks.classList.toggle("p-4");
+            navLinks.classList.toggle("z-50");
+        });
+    });
+
+</script>
+
+    
+
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="spinner mb-4"></div>
+        <p class="text-gray font-semibold">Loading DreamWeaver AI...</p>
+    </div>
+
+    <!-- Page Transition Overlay -->
+    <div class="page-transition"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar fixed top-0 w-full z-50 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-2xl font-bold flex items-center">
+                    <i class="fas fa-brain mr-2" style="color: #4caf50;"></i>
+                    DreamWeaver AI
+                </span>
+            </div>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#home" class="hover:text-green-500 transition duration-300">Home</a>
+                <a href="#features" class="hover:text-green-500 transition duration-300">Features</a>
+                <a href="#about" class="hover:text-green-500 transition duration-300">About</a>
+                <a href="loginPage.html" class="btn-login" id="login-btn">Login</a>
+            </div>
+            <button class="md:hidden text-2xl" style="color: #1a1a1a;">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section flex items-center justify-center text-center">
+        <!-- 3D Canvas -->
+        <canvas id="threeCanvas"></canvas>
+
+
+        <div class="geometric-circle top-10 left-10"></div>
+
+
+        
+        <div class="geometric-circle top-10 left-10"></div>
+        
+
+        <div class="hero-content px-4">
+            <div data-aos="fade-up">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                    Welcome to <span style="color: #4caf50;">DreamWeaver AI</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-gray">
+                    Your 24/7 companion for emotional wellness, blending AI innovation with heartfelt support
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="loginPage.html" class="btn-primary">
+                        Start Your Journey <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#features" class="btn-secondary">
+                        Explore Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+
+                <h2 class="text-3xl md:text-4xl font-bold mb-4" data-aos="fade-up">Transform Your Emotional Wellbeing
+                </h2>
+                <p class="text-lg text-gray max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                    Discover our powerful features designed to support your mental health journey
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="feature-card p-6" data-aos="fade-up">
+                    <div class="text-4xl mb-4" style="color: #4caf50;">
+                        <i class="fas fa-cloud-moon"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3">Dream Visualizer</h3>
+
+                    <p class="text-gray">Turn your dreams into vivid images, videos, stories, and audiobooks with
+                        soothing narration, sparking creativity and clarity.</p>
+
+                    <p class="text-gray">Turn your dreams into vivid images, videos, stories, and audiobooks with soothing narration, sparking creativity and clarity.</p>
+
+                </div>
+                <div class="feature-card p-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-4xl mb-4" style="color: #4caf50;">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3">Emotion-Aware Content</h3>
+
+                    <p class="text-gray">Senses your mood and delivers uplifting content or stores joyful moments in
+                        your Happy Vault for lasting positivity.</p>
+
+                    <p class="text-gray">Senses your mood and delivers uplifting content or stores joyful moments in your Happy Vault for lasting positivity.</p>
+
+                </div>
+                <div class="feature-card p-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl mb-4" style="color: #4caf50;">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3">Virtual AI Therapist</h3>
+
+                    <p class="text-gray">24/7 emotional support with CBT exercises, mindfulness, mood journaling, and
+                        crisis intervention for critical moments.</p>
+
+                    <p class="text-gray">24/7 emotional support with CBT exercises, mindfulness, mood journaling, and crisis intervention for critical moments.</p>
+
+                </div>
+                <div class="feature-card p-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-4xl mb-4" style="color: #4caf50;">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-3">Self-Help Hub</h3>
+
+                    <p class="text-gray">Daily motivation, gratitude exercises, and guided steps to build emotional
+                        resilience and positive habits.</p>
+
+                    <p class="text-gray">Daily motivation, gratitude exercises, and guided steps to build emotional resilience and positive habits.</p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20" style="background: #f0f0f0;">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8" data-aos="fade-up">About DreamWeaver AI</h2>
+                <p class="text-lg text-gray mb-6 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+
+                    DreamWeaver AI is revolutionizing emotional wellness by combining cutting-edge AI with
+                    evidence-based therapeutic approaches, offering accessible, affordable, and stigma-free support.
+                </p>
+                <p class="text-lg text-gray mb-8 leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+                    Founded by a team of psychologists, AI experts, and mental health advocates, we’re committed to
+                    democratizing emotional wellbeing with personalized tools for daily support, crisis intervention,
+                    and personal growth.
+                </p>
+
+
+                    DreamWeaver AI is revolutionizing emotional wellness by combining cutting-edge AI with evidence-based therapeutic approaches, offering accessible, affordable, and stigma-free support.
+                </p>
+                <p class="text-lg text-gray mb-8 leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+                    Founded by a team of psychologists, AI experts, and mental health advocates, we’re committed to democratizing emotional wellbeing with personalized tools for daily support, crisis intervention, and personal growth.
+                </p>
+                
+
+                <!-- Our Vision Subsection -->
+                <div class="mt-12">
+                    <h3 class="text-2xl font-semibold mb-6" data-aos="fade-up">Our Vision</h3>
+                    <p class="text-lg text-gray mb-6 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+
+                        DreamWeaver AI is your all-in-one emotional wellness companion, designed to bridge the gap
+                        between mental health needs and traditional therapy barriers. Our platform empowers users with
+                        dream visualization, mood-based content, and a 24/7 virtual therapist, all tailored to your
+                        emotional state.
+                    </p>
+                    <p class="text-lg text-gray mb-6 leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+                        We envision a world where emotional support is accessible to everyone, anytime, anywhere. By
+                        leveraging AI for dream-to-media creation, emotional analysis, and crisis intervention, we
+                        provide private, affordable, and creative solutions to enhance emotional resilience and
+                        happiness.
+
+                        DreamWeaver AI is your all-in-one emotional wellness companion, designed to bridge the gap between mental health needs and traditional therapy barriers. Our platform empowers users with dream visualization, mood-based content, and a 24/7 virtual therapist, all tailored to your emotional state.
+                    </p>
+                    <p class="text-lg text-gray mb-6 leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+                        We envision a world where emotional support is accessible to everyone, anytime, anywhere. By leveraging AI for dream-to-media creation, emotional analysis, and crisis intervention, we provide private, affordable, and creative solutions to enhance emotional resilience and happiness.
+
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                        <div class="feature-card p-6" data-aos="fade-up">
+                            <div class="text-3xl mb-4" style="color: #4caf50;">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Unique Features</h3>
+
+                            <p class="text-gray">From dream visualization to emotion-aware content and emergency
+                                support, our platform offers a holistic approach to mental wellness.</p>
+
+                            <p class="text-gray">From dream visualization to emotion-aware content and emergency support, our platform offers a holistic approach to mental wellness.</p>
+
+                        </div>
+                        <div class="feature-card p-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="text-3xl mb-4" style="color: #4caf50;">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Privacy & Accessibility</h3>
+
+                            <p class="text-gray">Encrypted data and 24/7 availability ensure safe, stigma-free support
+                                for all, regardless of financial or geographic barriers.</p>
+
+                            <p class="text-gray">Encrypted data and 24/7 availability ensure safe, stigma-free support for all, regardless of financial or geographic barriers.</p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                    <div class="feature-card p-6" data-aos="fade-up">
+                        <div class="text-3xl mb-4" style="color: #4caf50;">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Complete Privacy</h3>
+
+                        <p class="text-gray">Your data is encrypted and never shared, ensuring a confidential journey.
+                        </p>
+
+                        <p class="text-gray">Your data is encrypted and never shared, ensuring a confidential journey.</p>
+
+                    </div>
+                    <div class="feature-card p-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="text-3xl mb-4" style="color: #4caf50;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">24/7 Availability</h3>
+                        <p class="text-gray">Support whenever you need it, without waiting for an appointment.</p>
+                    </div>
+                    <div class="feature-card p-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="text-3xl mb-4" style="color: #4caf50;">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Evidence-Based</h3>
+                        <p class="text-gray">Tools grounded in CBT, mindfulness, and positive psychology research.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16" style="background: linear-gradient(135deg, #d7d7d7, #b0b0b0);">
+        <div class="container mx-auto text-center px-4">
+
+
+            <h2 class="text-3xl md:text-4xl font-bold mb-6" data-aos="fade-up">Ready to Transform Your Emotional Wellbeing?</h2>
+
+            <p class="text-xl mb-8 max-w-2xl mx-auto text-gray" data-aos="fade-up" data-aos-delay="100">
+                Join thousands who have discovered the power of AI-assisted emotional support
+            </p>
+            <a href="loginPage.html" class="btn-primary" data-aos="fade-up" data-aos-delay="200">
+                Get Started for Free <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <span class="text-2xl font-bold flex items-center">
+                        <i class="fas fa-brain mr-2" style="color: #4caf50;"></i>
+                        DreamWeaver AI
+                    </span>
+                    <p class="text-gray mt-2">Your 24/7 Emotional Wellness Companion</p>
+                </div>
+                <div class="flex space-x-6 mb-6 md:mb-0">
+
+                    <a href="https://www.facebook.com/share/1BW7gtQoWC/" class="social-link"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/SPowade1017?t=NlQoHIgZqohxXQAx-geghw&s=09" class="social-link"><i
+                            class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/samay_powade_11?igsh=MWE2NmtqdWtjbzZ0Ng==" class="social-link"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/samay-p-103259269?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                        class="social-link"><i class="fab fa-linkedin-in"></i></a>
+
+                </div>
+                <div class="flex flex-col items-center md:items-end">
+                    <p class="text-sm text-gray mb-2">© 2025 DreamWeaver AI. All rights reserved.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-sm text-gray hover:text-green-500">Privacy Policy</a>
+                        <a href="#" class="text-sm text-gray hover:text-green-500">Terms of Service</a>
+                        <a href="#" class="text-sm text-gray hover:text-green-500">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="js/intro.js"></script>
+
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'937e5c50dfe5b004',t:'MTc0NTkyNTEwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+
+</body>
+
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'937e5c50dfe5b004',t:'MTc0NTkyNTEwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+
+</body>
+
+</html>

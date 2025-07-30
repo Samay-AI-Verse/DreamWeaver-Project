@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Assistant</title>
+    <style>
+
+    </style>
+    <link rel="stylesheet" href="css/ChatUI.css">
+</head>
+
+<body>
+    <!-- Hamburger Menu -->
+    <button class="hamburger-menu" id="hamburger-menu" aria-label="Open Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M4 8h16" />
+            <path d="M4 16h16" />
+        </svg>
+    </button>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="mobile-sidebar-overlay" id="mobile-sidebar-overlay"></div>
+
+    <!-- Mobile Sidebar (Drawer) -->
+    <aside class="mobile-sidebar" id="mobile-sidebar" aria-label="Mobile Navigation">
+        <div class="mobile-sidebar-header">
+            <div class="logo-container">
+                <div class="logo" aria-label="App Logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" fill="#4CAF50"
+                            stroke="#4CAF50" />
+                        <path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z" fill="#81C784" stroke="#4CAF50" />
+                        <path d="M17 16L17.3 17.5L18.5 18L17.3 18.5L17 20L16.7 18.5L15.5 18L16.7 17.5L17 16Z"
+                            fill="#81C784" stroke="#4CAF50" />
+                    </svg>
+                </div>
+                <span class="logo-text">DreamWeaver</span>
+            </div>
+        </div>
+
+
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-section="home" aria-label="Home">
+                        <div class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="M21 21l-4.35-4.35" />
+                            </svg>
+                        </div>
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="DreamCraft.html" class="nav-link">
+                        <div class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" />
+                            </svg>
+                        </div>
+                        DreamCraft
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="soul-safe" aria-label="SoulSafe">
+                        <div class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 8a7 7 0 0 1 14 0v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z" />
+                                <path d="M12 16v2m-2-2v2m4-2v2" />
+                            </svg>
+                        </div>
+                        SoulSafe
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <button class="mobile-new-chat-btn" id="mobile-new-chat-btn" aria-label="New Chat">New Chat</button>
+
+        <div class="chat-history-wrapper">
+            <div class="expanded-menu-title-01">
+                <span>Chat History</span>
+            </div>
+            <ul class="expanded-menu-list" id="mobile-chat-history-list">
+                <!-- Chat history items -->
+            </ul>
+        </div>
+
+        <div class="user-account" id="user-account">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&h=40&q=80"
+                alt="User Profile">
+
+        </div>
+
+        <!-- User Dropdown -->
+        <div class="user-dropdown" id="user-dropdown">
+            <a href="#" class="user-dropdown-item" data-tooltip="My account">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                My account
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Personalize">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 19l-2-2 2-2m0 0H7v-5m5 7l2-2m-2-2l2 2m0-4l2 2 2-2m0 0V7h5m-7 7l-2 2" />
+                </svg>
+                Personalize
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                Notifications
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Appearance">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3h18v18H3z" />
+                    <path d="M21 9H3" />
+                </svg>
+                Appearance
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Purchases">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <path d="M3 6h18" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                Purchases
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Settings">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+                Settings
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Voice Support">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 19l-2-2 2-2m0 0H7v-5m5 7l2-2m-2-2l2 2m0-4l2 2 2-2m0 0V7h5m-7 7l-2 2" />
+                </svg>
+                Voice Support
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Language">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path
+                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+                Language
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Incognito">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                Incognito
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Logout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+                </svg>
+                Logout
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- Left Sidebar (Desktop) -->
+    <aside class="sidebar" id="sidebar" aria-label="Navigation">
+        <div class="logo" aria-label="App Logo">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" fill="#4CAF50" stroke="#4CAF50" />
+                <path d="M5 3L5.5 5L7 5.5L5.5 6L5 8L4.5 6L3 5.5L4.5 5L5 3Z" fill="#81C784" stroke="#4CAF50" />
+                <path d="M17 16L17.3 17.5L18.5 18L17.3 18.5L17 20L16.7 18.5L15.5 18L16.7 17.5L17 16Z" fill="#81C784"
+                    stroke="#4CAF50" />
+            </svg>
+        </div>
+
+        <button class="add-btn" id="add-btn" aria-label="Add new chat">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="#ffffff" stroke-width="2" fill="none">
+                <path d="M12 5v14M5 12h14" />
+            </svg>
+        </button>
+
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-section="home" aria-label="Home">
+                        <div class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="M21 21l-4.35-4.35" />
+                            </svg>
+                        </div>
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="DreamCraft.html" class="nav-link">
+                        <div class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" />
+                            </svg>
+                        </div>
+                        DreamCraft
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="soul-safe" aria-label="SoulSafe">
+                        <div class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 8a7 7 0 0 1 14 0v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z" />
+                                <path d="M12 16v2m-2-2v2m4-2v2" />
+                            </svg>
+                        </div>
+                        SoulSafe
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- User Account -->
+        <div class="user-account" id="user-account-01">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&h=40&q=80"
+                alt="User Profile">
+        </div>
+
+        <!-- User Dropdown -->
+        <div class="user-dropdown" id="user-dropdown-01">
+            <a href="#" class="user-dropdown-item" data-tooltip="My account">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                My account
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Personalize">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 19l-2-2 2-2m0 0H7v-5m5 7l2-2m-2-2l2 2m0-4l2 2 2-2m0 0V7h5m-7 7l-2 2" />
+                </svg>
+                Personalize
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                Notifications
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Appearance">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3h18v18H3z" />
+                    <path d="M21 9H3" />
+                </svg>
+                Appearance
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Purchases">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <path d="M3 6h18" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                Purchases
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Settings">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+                Settings
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Voice Support">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 19l-2-2 2-2m0 0H7v-5m5 7l2-2m-2-2l2 2m0-4l2 2 2-2m0 0V7h5m-7 7l-2 2" />
+                </svg>
+                Voice Support
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Language">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path
+                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+                Language
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Incognito">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                Incognito
+            </a>
+            <a href="#" class="user-dropdown-item" data-tooltip="Logout" style="width:200px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px;">
+                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+                </svg>
+                Logout
+            </a>
+        </div>
+    </aside>
+    <div class="expanded-menu" id="expanded-menu">
+        <div class="expanded-menu-title">
+            <span>Chat History</span>
+            <button id="toggle-pin" class="pin-icon" title="Pin Sidebar">
+                <svg id="pin-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 3v4a1 1 0 0 0 1 1h4" />
+                    <path d="M8 16l-4 4" />
+                    <path d="M3 21l4-4 10-10a2.828 2.828 0 0 1 4 4L7 21H3z" />
+                </svg>
+            </button>
+        </div>
+
+        <ul class="expanded-menu-list" id="chat-history-list">
+            <!-- Chat history items will be dynamically added here -->
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <div class="page-content" id="page-content">
+            <div class="welcome-page" id="welcome-page">
+                <div class="welcome-content">
+                    <h1 class="welcome-message">Welcome to DreamWeaver AI</h1>
+                    <p class="welcome-subtext">Your emotional wellness journey begins here!</p>
+                </div>
+            </div>
+            <!-- Chat Interface -->
+            <div class="chat-interface" id="chat-interface">
+                <!-- Model Selector -->
+                <div class="model-selector">
+                    <div class="model-option active" data-model="noira" id="NoiraModel">Noira</div>
+                    <div class="model-option" data-model="dreamcraft" id="DreamCraftModel" title="DreamCraft">DreamCraft
+                    </div>
+
+                </div>
+
+
+                <!-- Chat Area -->
+                <div class="chat-area" id="chat-area">
+                    <!-- Welcome screen shown by default -->
+                    <div class="welcome-screen" id="welcome-screen">
+                        <h1 class="welcome-title">How can I help you today?</h1>
+                        <div class="examples-container">
+                            <div class="example-card">
+                                <div class="example-title">Write a soothing poem about hope and healing.</div>
+                                <div class="example-text">Create a short comforting poem for someone feeling
+                                    overwhelmed.</div>
+                            </div>
+                            <div class="example-card">
+                                <div class="example-title">Tell me a wholesome, clean joke to make me smile.</div>
+                                <div class="example-text">Make me laugh with a short, funny story.
+                                </div>
+                            </div>
+                            <div class="example-card">
+                                <div class="example-title">Give me 3 powerful affirmations to boost self-love and
+                                    confidence.</div>
+                                <div class="example-text">Motivate me with feel-good affirmations for the day.</div>
+                            </div>
+                            <div class="example-card">
+                                <div class="example-title">Suggest calming music for when I feel anxious.</div>
+                                <div class="example-text">Recommend upbeat songs for a good mood.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-area">
+                    <div class="input-container">
+                        <div class="input-buttons-left">
+                            <!-- File Upload Button -->
+                            <button class="input-button" id="file-upload-button" title="Upload File">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <path d="M16 13H8" />
+                                    <path d="M16 17H8" />
+                                    <path d="M10 9H8" />
+                                </svg>
+                            </button>
+                            <!-- Voice Assistant Button -->
+                            <button class="input-button" id="voice-assistant-button" title="Voice Input">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M12 19l-2-2 2-2m0 0H7v-5m5 7l2-2m-2-2l2 2m0-4l2 2 2-2m0 0V7h5m-7 7l-2 2" />
+                                </svg>
+                            </button>
+                        </div>
+                        <textarea class="chat-input" id="chat-input" placeholder="Message DreamWeaver..."
+                            rows="1"></textarea>
+                        <div class="input-buttons-right">
+                            <button class="input-button" id="mic-button" title="Microphone">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                    <line x1="12" y1="19" x2="12" y2="23" />
+                                    <line x1="8" y1="23" x2="16" y2="23" />
+                                </svg>
+                            </button>
+
+                            <button class="send-button" id="send-button">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/ChatUI.js">
+
+    </script>
+
+    <!-- Microphone Overlay -->
+    <!-- Microphone Overlay -->
+    <div class="mic-overlay" id="mic-overlay">
+        <div class="mic-container">
+            <div class="mic-icon" id="mic-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </div>
+            <div class="mic-status" id="mic-status">Tap microphone to start</div>
+            <button class="mic-button" id="mic-stop-button">Stop Listening</button>
+        </div>
+    </div>
+
+
+
+    <div class="modal" id="personalize-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Your Profile</h2>
+                <button class="close-button" id="close-modal" style="font-size:30px;">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="preference-section">
+                    <label for="profile-picture-options">Choose Profile Picture</label>
+                    <div class="selected-profile-picture">
+                        <img id="profile-picture-preview" src="assets/M1.jpg" alt="Profile Picture">
+                    </div>
+                    <div class="profile-picture-options" id="profile-picture-options"></div>
+                </div>
+                <div class="preference-section">
+                    <label for="user-name">What's your nickname?</label>
+                    <input type="text" id="user-name" placeholder="Your Name">
+                </div>
+                <div class="preference-section">
+                    <label>Select Gender</label>
+                    <div class="gender-options" id="gender-buttons">
+                        <button class="gender-button select-button" data-value="male">
+                            <img src="assets/male.png" alt="Male Icon" class="gender-icon">
+                            <span>Male</span>
+                        </button>
+                        <button class="gender-button select-button" data-value="female">
+                            <img src="assets/female.png" alt="Female Icon" class="gender-icon">
+                            <span>Female</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="preference-section">
+                    <label for="assistant-buttons">Select Assistant Type</label>
+                    <div class="assistant-options" id="assistant-buttons">
+                        <button class="assistant-button select-button" data-value="female">
+                            <img src="assets/Female Assistant.jpg" alt="Female Assistant" class="assistant-icon">
+                            <span>Female Assistant</span>
+                        </button>
+                        <button class="assistant-button select-button" data-value="male">
+                            <img src="assets/male Asistant.jpg" alt="Male Assistant" class="assistant-icon">
+                            <span>Male Assistant</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="preference-section">
+                    <label for="language-buttons">Select Language</label>
+                    <div class="language-options" id="language-buttons">
+                        <button class="language-button  select-button" data-value="en">English</button>
+                        <button class="language-button  select-button" data-value="hi">Hindi</button>
+                        <button class="language-button  select-button" data-value="mr">Marathi</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-button" id="save-preferences">Save Profile</button>
+            </div>
+            <div class="message success" id="success-message">Profile saved successfully!</div>
+            <div class="message error" id="error-message">Please fill all required fields.</div>
+        </div>
+    </div>
+</body>
+
+</html>

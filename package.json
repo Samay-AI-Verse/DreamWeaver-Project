@@ -1,0 +1,33 @@
+{
+    "name": "dreamweaver-ai",
+    "version": "1.0.0",
+    "description": "AI-powered emotional wellness platform",
+    "main": "server/index.js",
+    "scripts": {
+        "start": "node server/index.js",
+        "dev": "nodemon server/index.js"
+    },
+    "dependencies": {
+        "@google-cloud/text-to-speech": "^6.0.1",
+        "axios": "^1.9.0",
+        "bcrypt": "^5.1.1",
+        "bcryptjs": "^2.4.3",
+        "cors": "^2.8.5",
+        "dotenv": "^16.5.0",
+        "express": "^4.21.2",
+        "express-session": "^1.18.1",
+        "groq-sdk": "^0.20.1",
+        "gtts": "^0.2.1",
+        "jsonwebtoken": "^9.0.2",
+        "mongoose": "^7.8.7",
+        "multer": "^1.4.5-lts.2",
+        "node-cache": "^5.1.2",
+        "passport": "^0.7.0",
+        "passport-facebook": "^3.0.0",
+        "passport-github2": "^0.1.12",
+        "passport-google-oauth20": "^2.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    }
+}

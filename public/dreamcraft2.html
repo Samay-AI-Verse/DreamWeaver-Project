@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamCraft</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes rotate3D {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        @keyframes iconPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .animate-pulse-btn { animation: pulse 0.3s ease-in-out; }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        .animate-rotate-3d { animation: rotate3D 8s linear infinite; }
+        .animate-slide-in { animation: slideIn 0.3s ease-out; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-icon-pulse:hover { animation: iconPulse 1.5s infinite; }
+        .gradient-btn {
+            background: linear-gradient(45deg, #1e3a8a, #3b82f6);
+            transition: all 0.3s ease;
+        }
+        .gradient-btn:hover {
+            background: linear-gradient(45deg, #2563eb, #60a5fa);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .gradient-btn.selected {
+            background: linear-gradient(45deg, #d4af37, #facc15);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        .craft-btn {
+            background: linear-gradient(45deg, #1e3a8a, #10b981);
+            transition: all 0.3s ease;
+        }
+        .craft-btn:hover {
+            background: linear-gradient(45deg, #2563eb, #34d399);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .popup-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            transition: opacity 0.3s ease;
+        }
+        .popup-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transform: scale(0.95);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .popup-content.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        .sidebar.hidden {
+            transform: translateX(100%);
+        }
+        /* 3D Background */
+        .background-3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .geometric-object {
+            position: absolute;
+            opacity: 0.2;
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            background: linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(212, 175, 55, 0.1));
+        }
+        .cube {
+            width: 100px;
+            height: 100px;
+            transform-style: preserve-3d;
+        }
+        .tetrahedron {
+            width: 80px;
+            height: 80px;
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen relative">
+    <!-- 3D Animated Background -->
+    <div class="background-3d">
+        <div class="geometric-object cube animate-rotate-3d animate-float" style="top: 10%; left: 20%;"></div>
+        <div class="geometric-object tetrahedron animate-rotate-3d animate-float" style="top: 60%; left: 70%; animation-delay: -2s;"></div>
+        <div class="geometric-object cube animate-rotate-3d animate-float" style="top: 30%; left: 80%; animation-delay: -4s;"></div>
+        <div class="geometric-object tetrahedron animate-rotate-3d animate-float" style="top: 80%; left: 10%; animation-delay: -6s;"></div>
+    </div>
+
+    <div class="container mx-auto p-6 max-w-4xl relative z-10">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-emerald-600">DreamCraft</h1>
+            <p class="text-xl text-gray-700 mt-2">Transform your dreams into stories, images, and comics with AI magic</p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="mb-10 bg-white bg-opacity-90 backdrop-blur-md p-6 rounded-xl shadow-lg">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Describe your dream:</h2>
+            <textarea id="dreamInput" class="w-full p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-emerald-500" rows="5" Placeholder="Type your dream here..."></textarea>
+            <div class="flex flex-col items-center gap-4 mt-4">
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button id="generateStory" class="gradient-btn text-white px-6 py-3 rounded-lg font-medium">Generate Story</button>
+                    <button id="generateImage" class="gradient-btn text-white px-6 py-3 rounded-lg font-medium">Generate Image</button>
+                    <button id="generateComic" class="gradient-btn text-white px-6 py-3 rounded-lg font-medium">Generate Comic Book</button>
+                </div>
+                <button id="craftDream" class="craft-btn text-white px-8 py-3 rounded-lg font-semibold text-lg">Craft Your Dream</button>
+            </div>
+        </section>
+
+        <!-- History Sidebar -->
+        <div id="sidebar" class="fixed top-0 right-0 h-full w-80 shadow-lg p-4 sidebar hidden z-20">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-blue-900">Dream History</h2>
+                <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="historyList" class="space-y-4 overflow-y-auto max-h-[calc(100vh-100px)]"></div>
+        </div>
+        <button id="openSidebar" class="fixed top-4 right-4 bg-emerald-600 text-white p-3 rounded-full hover:bg-emerald-700 animate-icon-pulse z-20">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.5c4.418 0 8 3.582 8 8s-3.582 8-8 8-8-3.582-8-8 3.582-8 8-8zm0 2c-3.314 0-6 2.686-6 6s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6z" />
+                <circle cx="12" cy="12" r="2" fill="currentColor" />
+            </svg>
+        </button>
+
+        <!-- Popup Modal -->
+        <div id="popupOverlay" class="fixed inset-0 popup-overlay hidden flex items-center justify-center z-50">
+            <div id="popupContent" class="popup-content rounded-xl shadow-2xl max-w-3xl w-full max-h-[80vh] overflow-y-auto p-6 opacity-0">
+                <div id="popupLoading" class="text-center">
+                    <div class="animate-rotate-3d inline-block w-12 h-12">
+                        <div class="w-full h-full bg-gradient-to-r from-blue-900 to-emerald-600 transform rotate-45 scale-75" style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></div>
+                    </div>
+                    <p class="text-gray-600 mt-4">Crafting your dream...</p>
+                </div>
+                <div id="popupResults" class="hidden">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4">Your Dream Creation</h2>
+                    <button id="closePopup" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <div id="popupStory" class="mb-6 hidden animate-fade-in">
+                        <h3 class="text-xl font-semibold text-blue-900">Story</h3>
+                        <p id="popupStoryText" class="p-4 bg-gray-50 rounded-lg"></p>
+                    </div>
+                    <div id="popupImage" class="mb-6 hidden animate-fade-in">
+                        <h3 class="text-xl font-semibold text-blue-900">Image</h3>
+                        <img id="popupDreamImage" class="mt-2 rounded-lg shadow max-w-full" alt="Generated Dream Image">
+                    </div>
+                    <div id="popupComic" class="hidden animate-fade-in">
+                        <h3 class="text-xl font-semibold text-blue-900">Comic Book</h3>
+                        <div id="popupComicPanels" class="space-y-6"></div>
+                        <div class="flex justify-between mt-4">
+                            <button id="popupPrevPage" class="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-800 disabled:opacity-50">Previous</button>
+                            <span id="popupPageInfo" class="text-gray-600">Page 1 of 1</span>
+                            <button id="popupNextPage" class="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-800 disabled:opacity-50">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize elements
+        const dreamInput = document.getElementById('dreamInput');
+        const generateStoryBtn = document.getElementById('generateStory');
+        const generateImageBtn = document.getElementById('generateImage');
+        const generateComicBtn = document.getElementById('generateComic');
+        const craftDreamBtn = document.getElementById('craftDream');
+        const popupOverlay = document.getElementById('popupOverlay');
+        const popupContent = document.getElementById('popupContent');
+        const popupLoading = document.getElementById('popupLoading');
+        const popupResults = document.getElementById('popupResults');
+        const closePopupBtn = document.getElementById('closePopup');
+        const popupStory = document.getElementById('popupStory');
+        const popupStoryText = document.getElementById('popupStoryText');
+        const popupImage = document.getElementById('popupImage');
+        const popupDreamImage = document.getElementById('popupDreamImage');
+        const popupComic = document.getElementById('popupComic');
+        const popupComicPanels = document.getElementById('popupComicPanels');
+        const popupPrevPage = document.getElementById('popupPrevPage');
+        const popupNextPage = document.getElementById('popupNextPage');
+        const popupPageInfo = document.getElementById('popupPageInfo');
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+        const historyList = document.getElementById('historyList');
+
+        let selectedType = null;
+        let currentPage = 1;
+        let totalPages = 1;
+        let comicData = [];
+        let history = JSON.parse(localStorage.getItem('dreamHistory')) || [];
+
+        // Simulated AI API calls (replace with actual API endpoints)
+        async function generateStory(dream) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(`In a world inspired by "${dream}", a hero embarked on a journey through a mystical land filled with wonder and adventure. The skies shimmered with colors unseen, and every step revealed new mysteries to unravel.`);
+                }, 2000); // Simulate LLM delay
+            });
+        }
+
+        async function generateImage(dream) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve('https://via.placeholder.com/600x400.png?text=Dream+Image');
+                }, 2000); // Simulate LLM delay
+            });
+        }
+
+        async function generateComic(dream) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve([
+                        { image: 'https://via.placeholder.com/300x200.png?text=Panel+1', text: `In "${dream}", the hero discovers a hidden realm.` },
+                        { image: 'https://via.placeholder.com/300x200.png?text=Panel+2', text: 'A fierce battle ensues with a mythical beast.' },
+                        { image: 'https://via.placeholder.com/300x200.png?text=Panel+3', text: 'The hero finds an ancient artifact.' },
+                        { image: 'https://via.placeholder.com/300x200.png?text=Panel+4', text: 'The journey ends with a newfound purpose.' }
+                    ]);
+                }, 2000); // Simulate LLM delay
+            });
+        }
+
+        // Button click animation
+        function animateButton(btn) {
+            if (btn) {
+                btn.classList.add('animate-pulse-btn');
+                setTimeout(() => btn.classList.remove('animate-pulse-btn'), 300);
+            }
+        }
+
+        // Show/hide popup
+        function showPopup() {
+            if (popupOverlay && popupContent) {
+                popupOverlay.classList.remove('hidden');
+                popupContent.classList.add('show');
+                popupLoading.classList.remove('hidden');
+                popupResults.classList.add('hidden');
+            }
+        }
+
+        function hidePopup() {
+            if (popupOverlay && popupContent) {
+                popupOverlay.classList.add('hidden');
+                popupContent.classList.remove('show');
+            }
+        }
+
+        // Show/hide sidebar
+        function hideSidebar() {
+            if (sidebar) {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('animate-slide-in');
+            }
+        }
+
+        // Handle selection
+        function selectType(type, btn) {
+            selectedType = type;
+            [generateStoryBtn, generateImageBtn, generateComicBtn].forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        // Handle history
+        function addToHistory(type, data, dream) {
+            const id = Date.now().toString();
+            history.unshift({ id, type, data, dream, timestamp: new Date().toLocaleString() });
+            localStorage.setItem('dreamHistory', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function deleteHistoryItem(id) {
+            history = history.filter(item => item.id !== id);
+            localStorage.setItem('dreamHistory', JSON.stringify(history));
+            renderHistory();
+            hideSidebar(); // Close sidebar after delete
+        }
+
+        function viewHistoryItem(item) {
+            showPopup();
+            if (item.type === 'story') {
+                popupStoryText.textContent = item.data;
+                popupStory.classList.remove('hidden');
+                popupImage.classList.add('hidden');
+                popupComic.classList.add('hidden');
+            } else if (item.type === 'image') {
+                popupDreamImage.src = item.data;
+                popupImage.classList.remove('hidden');
+                popupStory.classList.add('hidden');
+                popupComic.classList.add('hidden');
+            } else if (item.type === 'comic') {
+                comicData = item.data;
+                totalPages = Math.ceil(comicData.length / 2);
+                currentPage = 1;
+                displayComicPage(comicData);
+                popupComic.classList.remove('hidden');
+                popupStory.classList.add('hidden');
+                popupImage.classList.add('hidden');
+            }
+            popupLoading.classList.add('hidden');
+            popupResults.classList.remove('hidden');
+            hideSidebar(); // Close sidebar after view
+        }
+
+        function renderHistory() {
+            if (!historyList) {
+                console.error('historyList element not found');
+                return;
+            }
+            historyList.innerHTML = '';
+            history.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-gray-50 bg-opacity-90 backdrop-blur-sm p-3 rounded-lg relative cursor-pointer hover:bg-gray-100 transition';
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-semibold text-blue-900">${item.type}</p>
+                            <p class="text-xs text-gray-500">${item.timestamp}</p>
+                            <p class="text-sm text-gray-700 mt-1">${item.dream.slice(0, 50)}${item.dream.length > 50 ? '...' : ''}</p>
+                        </div>
+                        <button class="delete-history text-red-500 hover:text-red-700" data-id="${item.id}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                div.addEventListener('click', (e) => {
+                    if (!e.target.closest('.delete-history')) {
+                        viewHistoryItem(item);
+                    }
+                });
+                historyList.appendChild(div);
+            });
+            historyList.querySelectorAll('.delete-history').forEach(btn => {
+                btn.addEventListener('click', () => deleteHistoryItem(btn.dataset.id));
+            });
+        }
+
+        // Display comic page
+        function displayComicPage(data) {
+            if (!popupComicPanels) {
+                console.error('popupComicPanels element not found');
+                return;
+            }
+            popupComicPanels.innerHTML = '';
+            const start = (currentPage - 1) * 2;
+            const end = start + 2;
+            for (let i = start; i < end && i < data.length; i++) {
+                const panel = data[i];
+                const div = document.createElement('div');
+                div.className = 'space-y-2';
+                div.innerHTML = `
+                    <img src="${panel.image}" class="w-full rounded-lg shadow" alt="Comic Panel ${i + 1}">
+                    <p class="text-sm text-gray-700">${panel.text}</p>
+                `;
+                popupComicPanels.appendChild(div);
+            }
+            popupPageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            popupPrevPage.disabled = currentPage === 1;
+            popupNextPage.disabled = currentPage === totalPages;
+        }
+
+        // Event listeners
+        generateStoryBtn.addEventListener('click', () => {
+            animateButton(generateStoryBtn);
+            selectType('story', generateStoryBtn);
+        });
+
+        generateImageBtn.addEventListener('click', () => {
+            animateButton(generateImageBtn);
+            selectType('image', generateImageBtn);
+        });
+
+        generateComicBtn.addEventListener('click', () => {
+            animateButton(generateComicBtn);
+            selectType('comic', generateComicBtn);
+        });
+
+        craftDreamBtn.addEventListener('click', async () => {
+            animateButton(craftDreamBtn);
+            const dream = dreamInput.value.trim();
+            if (!dream) {
+                alert('Please describe your dream!');
+                return;
+            }
+            if (!selectedType) {
+                alert('Please select an output type (Story, Image, or Comic)!');
+                return;
+            }
+            showPopup();
+            let result;
+            if (selectedType === 'story') {
+                result = await generateStory(dream);
+                popupStoryText.textContent = result;
+                popupStory.classList.remove('hidden');
+                popupImage.classList.add('hidden');
+                popupComic.classList.add('hidden');
+            } else if (selectedType === 'image') {
+                result = await generateImage(dream);
+                popupDreamImage.src = result;
+                popupImage.classList.remove('hidden');
+                popupStory.classList.add('hidden');
+                popupComic.classList.add('hidden');
+            } else if (selectedType === 'comic') {
+                result = await generateComic(dream);
+                comicData = result;
+                totalPages = Math.ceil(result.length / 2);
+                currentPage = 1;
+                displayComicPage(result);
+                popupComic.classList.remove('hidden');
+                popupStory.classList.add('hidden');
+                popupImage.classList.add('hidden');
+            }
+            addToHistory(selectedType, result, dream);
+            popupLoading.classList.add('hidden');
+            popupResults.classList.remove('hidden');
+        });
+
+        popupPrevPage.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayComicPage(comicData);
+            }
+        });
+
+        popupNextPage.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayComicPage(comicData);
+            }
+        });
+
+        closePopupBtn.addEventListener('click', hidePopup);
+        popupOverlay.addEventListener('click', (e) => {
+            if (e.target === popupOverlay) hidePopup();
+        });
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('hidden');
+            sidebar.classList.add('animate-slide-in');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            hideSidebar();
+        });
+
+        // Initial render of history
+        renderHistory();
+    </script>
+</body>
+</html>

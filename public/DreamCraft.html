@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamCraft - Bring Your Dreams to Life</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --accent: #fd79a8;
+            --success: #00b894;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--dark);
+            opacity: 0.8;
+        }
+
+        .dream-input-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            animation: slideUp 0.8s ease;
+        }
+
+        .dream-input-container:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .dream-label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        #dreamPrompt {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 2px solid var(--secondary);
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        #dreamPrompt:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+
+        .creation-options {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            background: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .option-btn:hover::before {
+            left: 100%;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .option-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .option-btn i {
+            font-size: 1.2rem;
+        }
+
+        .generate-btn-container {
+            text-align: center;
+            margin-top: 1rem;
+            animation: fadeIn 1s ease 0.3s both;
+        }
+
+        #generateBtn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #generateBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
+        }
+
+        #generateBtn:active {
+            transform: translateY(1px);
+        }
+
+        #generateBtn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
+        }
+
+        #generateBtn:hover::after {
+            left: 100%;
+            top: 100%;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            gap: 2rem;
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: var(--dark);
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        /* 3D Loading Animation */
+        .dream-cube {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate 5s infinite linear;
+        }
+
+        .dream-cube div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.9;
+            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            background: rgba(108, 92, 231, 0.7);
+        }
+
+        .front { transform: translateZ(30px); }
+        .back { transform: rotateY(180deg) translateZ(30px); }
+        .right { transform: rotateY(90deg) translateZ(30px); }
+        .left { transform: rotateY(-90deg) translateZ(30px); }
+        .top { transform: rotateX(90deg) translateZ(30px); }
+        .bottom { transform: rotateX(-90deg) translateZ(30px); }
+
+        /* Result Display Styles */
+        .result-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .story-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .image-result {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .generated-image {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .comic-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .comic-page {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .comic-image {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comic-text {
+            padding: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .comic-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .comic-nav-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .comic-nav-btn:hover {
+            background: var(--secondary);
+        }
+
+        .comic-nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .audio-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            width: 0%;
+        }
+
+        .time-display {
+            font-size: 0.9rem;
+            color: var(--dark);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        /* History Sidebar */
+        .history-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .history-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .history-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            z-index: 99;
+            transition: right 0.4s ease;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .history-sidebar.active {
+            right: 0;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .history-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .close-history {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .history-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .history-prompt {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-type {
+            font-size: 0.8rem;
+            color: var(--primary);
+            background: rgba(108, 92, 231, 0.1);
+            padding: 0.3rem 0.6rem;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotateX(0) rotateY(0); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .creation-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .option-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .history-sidebar {
+                width: 90%;
+                right: -90%;
+            }
+            
+            .history-sidebar.active {
+                right: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <button class="history-toggle" id="historyToggle">
+        <i class="fas fa-history"></i>
+    </button>
+
+    <div class="history-sidebar" id="historySidebar">
+        <div class="history-header">
+            <h3 class="history-title">Your Dream History</h3>
+            <button class="close-history" id="closeHistory">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="history-items" id="historyItems">
+            <!-- History items will be added here dynamically -->
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>DreamCraft</h1>
+            <p class="subtitle">Transform your dreams into stories, images, and comics with AI magic</p>
+        </header>
+
+        <div class="dream-input-container">
+            <label for="dreamPrompt" class="dream-label">Describe your dream:</label>
+            <textarea id="dreamPrompt" placeholder="Enter your dream prompt here... For example: 'A space cowboy riding a neon dragon through a cyberpunk city'"></textarea>
+            
+            <div class="creation-options">
+                <button class="option-btn active" data-type="story">
+                    <i class="fas fa-book-open"></i> Generate Story
+                </button>
+                <button class="option-btn" data-type="image">
+                    <i class="fas fa-image"></i> Generate Image
+                </button>
+                <button class="option-btn" data-type="comic">
+                    <i class="fas fa-book"></i> Generate Comic Book
+                </button>
+            </div>
+            
+            <div class="generate-btn-container">
+                <button id="generateBtn">Craft Your Dream</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="generationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Crafting Your Dream</h3>
+                <button class="close-modal" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="loading-container" id="loadingContainer">
+                    <div class="dream-cube">
+                        <div class="front"><i class="fas fa-magic"></i></div>
+                        <div class="back"><i class="fas fa-star"></i></div>
+                        <div class="right"><i class="fas fa-book"></i></div>
+                        <div class="left"><i class="fas fa-palette"></i></div>
+                        <div class="top"><i class="fas fa-cloud"></i></div>
+                        <div class="bottom"><i class="fas fa-moon"></i></div>
+                    </div>
+                    <p class="loading-text" id="loadingText">Initializing dream crafting engine...</p>
+                </div>
+                
+                <div class="result-container" id="storyResult">
+                    <div class="story-content" id="generatedStory"></div>
+                    <div class="audio-controls" id="audioControls">
+                        <button class="audio-btn" id="playBtn">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="progress-container" id="progressContainer">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                        <div class="time-display" id="timeDisplay">00:00 / 00:00</div>
+                    </div>
+                </div>
+                
+                <div class="result-container" id="imageResult">
+                    <div class="image-result">
+                        <img src="" alt="Generated Image" class="generated-image" id="generatedImage">
+                    </div>
+                </div>
+                
+                <div class="result-container" id="comicResult">
+                    <div class="comic-container" id="comicPages">
+                        <!-- Comic pages will be added here dynamically -->
+                    </div>
+                    <div class="comic-navigation">
+                        <button class="comic-nav-btn" id="prevPageBtn" disabled>
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <span id="pageIndicator">Page 1 of 1</span>
+                        <button class="comic-nav-btn" id="nextPageBtn" disabled>
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const dreamPrompt = document.getElementById('dreamPrompt');
+            const optionBtns = document.querySelectorAll('.option-btn');
+            const generateBtn = document.getElementById('generateBtn');
+            const generationModal = document.getElementById('generationModal');
+            const closeModal = document.getElementById('closeModal');
+            const loadingContainer = document.getElementById('loadingContainer');
+            const loadingText = document.getElementById('loadingText');
+            const storyResult = document.getElementById('storyResult');
+            const imageResult = document.getElementById('imageResult');
+            const comicResult = document.getElementById('comicResult');
+            const generatedStory = document.getElementById('generatedStory');
+            const generatedImage = document.getElementById('generatedImage');
+            const comicPages = document.getElementById('comicPages');
+            const prevPageBtn = document.getElementById('prevPageBtn');
+            const nextPageBtn = document.getElementById('nextPageBtn');
+            const pageIndicator = document.getElementById('pageIndicator');
+            const historyToggle = document.getElementById('historyToggle');
+            const historySidebar = document.getElementById('historySidebar');
+            const closeHistory = document.getElementById('closeHistory');
+            const historyItems = document.getElementById('historyItems');
+            const playBtn = document.getElementById('playBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const timeDisplay = document.getElementById('timeDisplay');
+            
+            // State variables
+            let selectedType = 'story';
+            let currentPage = 1;
+            let totalPages = 1;
+            let audio = null;
+            let isPlaying = false;
+            let updateTimer;
+            
+            // Sample data for demonstration
+            const sampleStories = {
+                story: [
+                    "The neon lights of Neo-Tokyo reflected off the rain-slicked streets as Captain Zane, the last space cowboy, guided his cybernetic horse through the crowded district. His mission: to find the Dream Weaver, a legendary AI that could manifest thoughts into reality. The city hummed with energy, a mix of human desperation and machine precision.",
+                    "As Zane approached the towering spire at the city's center, he felt the weight of his past catching up. The memories of lost comrades and failed missions threatened to overwhelm him, but he pushed forward. The Dream Weaver was his last hope to rewrite his history, to undo the mistakes that haunted him.",
+                    "Inside the spire, the Dream Weaver awaited—a swirling mass of light and code. 'What do you seek, space cowboy?' it asked in a voice like a thousand whispers. Zane hesitated only a moment before answering: 'A second chance.' The Weaver pulsed with energy, and the world around him began to dissolve into infinite possibilities..."
+                ],
+                comic: [
+                    {
+                        image: "https://via.placeholder.com/800x400/6c5ce7/ffffff?text=Page+1:+Space+Cowboy+Arrival",
+                        text: "Captain Zane arrives in Neo-Tokyo, his cybernetic horse kicking up sparks as he surveys the neon-lit cityscape. The Dream Weaver's spire looms in the distance."
+                    },
+                    {
+                        image: "https://via.placeholder.com/800x400/a29bfe/ffffff?text=Page+2:+The+Dark+Alley",
+                        text: "Zane is ambushed by rogue androids in a dark alley. His plasma pistol hums to life as he prepares to defend himself against overwhelming odds."
+                    },
+                    {
+                        image: "https://via.placeholder.com/800x400/fd79a8/ffffff?text=Page+3:+Meeting+the+Dream+Weaver",
+                        text: "Inside the spire, Zane stands before the Dream Weaver—a swirling vortex of energy and data. 'What do you seek?' it asks, its voice echoing through the chamber."
+                    }
+                ],
+                image: "https://via.placeholder.com/800x500/6c5ce7/ffffff?text=Space+Cowboy+and+Neon+Dragon"
+            };
+            
+            // Event Listeners
+            optionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    optionBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedType = this.dataset.type;
+                });
+            });
+            
+            generateBtn.addEventListener('click', function() {
+                if (!dreamPrompt.value.trim()) {
+                    alert('Please enter your dream prompt first!');
+                    return;
+                }
+                
+                openModal();
+                startGeneration();
+            });
+            
+            closeModal.addEventListener('click', closeModalFunc);
+            
+            prevPageBtn.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updateComicDisplay();
+                }
+            });
+            
+            nextPageBtn.addEventListener('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updateComicDisplay();
+                }
+            });
+            
+            historyToggle.addEventListener('click', function() {
+                historySidebar.classList.toggle('active');
+            });
+            
+            closeHistory.addEventListener('click', function() {
+                historySidebar.classList.remove('active');
+            });
+            
+            playBtn.addEventListener('click', toggleAudio);
+            
+            progressContainer.addEventListener('click', function(e) {
+                if (!audio) return;
+                const percent = e.offsetX / this.offsetWidth;
+                audio.currentTime = percent * audio.duration;
+            });
+            
+            // Functions
+            function openModal() {
+                generationModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Reset UI
+                loadingContainer.style.display = 'flex';
+                storyResult.style.display = 'none';
+                imageResult.style.display = 'none';
+                comicResult.style.display = 'none';
+                
+                // Set modal title based on selection
+                const titles = {
+                    story: 'Crafting Your Story',
+                    image: 'Painting Your Dream',
+                    comic: 'Creating Your Comic Book'
+                };
+                document.getElementById('modalTitle').textContent = titles[selectedType];
+            }
+            
+            function closeModalFunc() {
+                generationModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                if (audio) {
+                    audio.pause();
+                    audio = null;
+                    clearInterval(updateTimer);
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            }
+            
+            function startGeneration() {
+                // Simulate different generation steps with timeouts
+                const steps = {
+                    story: [
+                        "Analyzing your dream narrative...",
+                        "Building character arcs...",
+                        "Weaving plot threads...",
+                        "Finalizing your story...",
+                        "Done!"
+                    ],
+                    image: [
+                        "Interpreting visual elements...",
+                        "Sketching initial composition...",
+                        "Adding colors and textures...",
+                        "Refining details...",
+                        "Done!"
+                    ],
+                    comic: [
+                        "Planning story structure...",
+                        "Writing script...",
+                        "Generating page layouts...",
+                        "Creating artwork...",
+                        "Done!"
+                    ]
+                };
+                
+                let step = 0;
+                const interval = setInterval(() => {
+                    if (step < steps[selectedType].length) {
+                        loadingText.textContent = steps[selectedType][step];
+                        step++;
+                    } else {
+                        clearInterval(interval);
+                        showResult();
+                    }
+                }, 1500);
+            }
+            
+            function showResult() {
+                loadingContainer.style.display = 'none';
+                
+                // Add to history
+                addToHistory(dreamPrompt.value, selectedType);
+                
+                // Show appropriate result
+                if (selectedType === 'story') {
+                    displayStory();
+                } else if (selectedType === 'image') {
+                    displayImage();
+                } else if (selectedType === 'comic') {
+                    displayComic();
+                }
+            }
+            
+            function displayStory() {
+                storyResult.style.display = 'block';
+                
+                // Generate sample story (in a real app, this would come from your LLM)
+                const story = sampleStories.story.join('\n\n');
+                generatedStory.textContent = story;
+                
+                // In a real app, you would call your TTS API here
+                // For demo, we'll simulate it with a timeout
+                setTimeout(() => {
+                    // This would be replaced with actual audio from your TTS
+                    audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+                    audio.addEventListener('loadedmetadata', function() {
+                        updateAudioDisplay();
+                    });
+                    audio.addEventListener('timeupdate', updateAudioDisplay);
+                    audio.addEventListener('ended', function() {
+                        isPlaying = false;
+                        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    });
+                }, 1000);
+            }
+            
+            function displayImage() {
+                imageResult.style.display = 'block';
+                
+                // Generate sample image (in a real app, this would come from your image generation model)
+                generatedImage.src = sampleStories.image;
+                generatedImage.alt = dreamPrompt.value;
+            }
+            
+            function displayComic() {
+                comicResult.style.display = 'block';
+                comicPages.innerHTML = '';
+                
+                // Generate sample comic (in a real app, this would come from your models)
+                sampleStories.comic.forEach((page, index) => {
+                    const pageElement = document.createElement('div');
+                    pageElement.className = 'comic-page';
+                    pageElement.innerHTML = `
+                        <img src="${page.image}" alt="Comic Page ${index + 1}" class="comic-image">
+                        <div class="comic-text">${page.text}</div>
+                    `;
+                    comicPages.appendChild(pageElement);
+                });
+                
+                totalPages = sampleStories.comic.length;
+                currentPage = 1;
+                updateComicDisplay();
+            }
+            
+            function updateComicDisplay() {
+                // Hide all pages
+                const pages = document.querySelectorAll('.comic-page');
+                pages.forEach(page => page.style.display = 'none');
+                
+                // Show current page
+                pages[currentPage - 1].style.display = 'block';
+                
+                // Update navigation buttons
+                prevPageBtn.disabled = currentPage === 1;
+                nextPageBtn.disabled = currentPage === totalPages;
+                
+                // Update page indicator
+                pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+            }
+            
+            function addToHistory(prompt, type) {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                
+                const typeLabels = {
+                    story: 'Story',
+                    image: 'Image',
+                    comic: 'Comic'
+                };
+                
+                historyItem.innerHTML = `
+                    <div class="history-prompt">${prompt.substring(0, 50)}${prompt.length > 50 ? '...' : ''}</div>
+                    <div class="history-type">${typeLabels[type]}</div>
+                `;
+                
+                historyItem.addEventListener('click', function() {
+                    dreamPrompt.value = prompt;
+                    optionBtns.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector(`.option-btn[data-type="${type}"]`).classList.add('active');
+                    selectedType = type;
+                    historySidebar.classList.remove('active');
+                });
+                
+                historyItems.insertBefore(historyItem, historyItems.firstChild);
+            }
+            
+            function toggleAudio() {
+                if (!audio) return;
+                
+                if (isPlaying) {
+                    audio.pause();
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    audio.play();
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                }
+                
+                isPlaying = !isPlaying;
+            }
+            
+            function updateAudioDisplay() {
+                if (!audio) return;
+                
+                const currentTime = formatTime(audio.currentTime);
+                const duration = formatTime(audio.duration);
+                timeDisplay.textContent = `${currentTime} / ${duration}`;
+                
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = `${percent}%`;
+            }
+            
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            // Close modal when clicking outside
+            generationModal.addEventListener('click', function(e) {
+                if (e.target === generationModal) {
+                    closeModalFunc();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

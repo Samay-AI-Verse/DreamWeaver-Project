@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DreamWeaver AI - Login & Signup</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .form-container {
+        width: 100%;
+        max-width: 100%;
+        position: relative;
+        transform: none !important;
+        opacity: 1 !important;
+        display: block;
+      }
+
+      .sign-up-container,
+      .sign-in-container {
+        display: block;
+      }
+
+      .overlay-container {
+        display: none;
+        /* Hide overlay on mobile */
+      }
+
+      .form-container form {
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      input,
+      button {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+
+      .social-container a {
+        margin: 0 10px;
+      }
+
+      .small-text,
+      .forgot {
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-container form {
+        padding: 15px;
+      }
+
+      input,
+      button {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .social-container a {
+        font-size: 18px;
+        margin: 0 8px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #2f2f2f;
+      font-size: 28px;
+    }
+
+    .small-text {
+      font-size: 12px;
+      color: #666;
+      margin: 10px 0;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      width: 700px;
+      max-width: 100%;
+      min-height: 450px;
+    }
+
+    .form-container {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      transition: all 0.6s ease-in-out;
+    }
+
+    .sign-in-container {
+      left: 0;
+      z-index: 2;
+    }
+
+    .container.right-panel-active .sign-in-container {
+      transform: translateX(100%);
+    }
+
+    .sign-up-container {
+      left: 0;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .container.right-panel-active .sign-up-container {
+      transform: translateX(100%);
+      opacity: 1;
+      z-index: 5;
+      animation: show 0.6s;
+    }
+
+    @keyframes show {
+
+      0%,
+      49.99% {
+        opacity: 0;
+        z-index: 1;
+      }
+
+      50%,
+      100% {
+        opacity: 1;
+        z-index: 5;
+      }
+    }
+
+    .overlay-container {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      transition: transform 0.6s ease-in-out;
+      z-index: 100;
+    }
+
+    .container.right-panel-active .overlay-container {
+      transform: translateX(-100%);
+    }
+
+    .overlay {
+      background: linear-gradient(135deg, #d7d7d7, #b0b0b0);
+      color: #333;
+      position: relative;
+      left: -100%;
+      height: 100%;
+      width: 200%;
+      transform: translateX(0);
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .container.right-panel-active .overlay {
+      transform: translateX(50%);
+    }
+
+    .overlay-panel {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 40px;
+      text-align: center;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .overlay-left {
+      transform: translateX(-20%);
+    }
+
+    .container.right-panel-active .overlay-left {
+      transform: translateX(0);
+    }
+
+    .overlay-right {
+      right: 0;
+      transform: translateX(0);
+    }
+
+    .container.right-panel-active .overlay-right {
+      transform: translateX(20%);
+    }
+
+    form {
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 50px;
+      height: 100%;
+      text-align: center;
+    }
+
+    input {
+      background: #f0f0f0;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin: 10px 0;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+
+    button {
+      border-radius: 25px;
+      border: none;
+      background: #4caf50;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 40px;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #43a047;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(67, 160, 71, 0.4);
+    }
+
+    button.ghost {
+      background: transparent;
+      border: 2px solid #ffffff;
+      color: #ffffff;
+    }
+
+    button.ghost:hover {
+      background: #ffffff;
+      color: #4caf50;
+    }
+
+    .social-container {
+      margin: 10px 0 20px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 15px;
+      width: 80%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .social-container a {
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 8px;
+      height: 45px;
+      width: 45px;
+      font-size: 18px;
+      color: #555;
+      transition: all 0.3s ease;
+    }
+
+    .social-container a:hover {
+      background: #4caf50;
+      color: #fff;
+      border-color: #4caf50;
+    }
+
+    .error-message,
+    .success-message {
+      font-size: 12px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .error-message {
+      color: #dc2626;
+    }
+
+    .success-message {
+      color: #2f855a;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Responsive styles for mobile devices */
+    @media (max-width: 768px) {
+      .container {
+        width: 100%;
+        min-height: auto;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        min-height: 50vh;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+
+      .sign-in-container,
+      .sign-up-container {
+        position: relative;
+        left: 0;
+        display: block;
+      }
+
+      .container.right-panel-active .sign-in-container {
+        display: none;
+      }
+
+      .container.right-panel-active .sign-up-container {
+        display: block;
+      }
+
+      .overlay-container {
+        display: none;
+      }
+
+      form {
+        padding: 20px;
+      }
+
+      input {
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 10px 30px;
+        font-size: 14px;
+      }
+
+      .social-container {
+        width: 100%;
+      }
+
+      .social-container a {
+        height: 40px;
+        width: 40px;
+        font-size: 16px;
+        margin: 0 10px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .small-text {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      form {
+        padding: 15px;
+      }
+
+      input {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      button {
+        padding: 8px 25px;
+        font-size: 12px;
+      }
+
+      .social-container a {
+        height: 35px;
+        width: 35px;
+        font-size: 14px;
+        margin: 0 8px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .small-text {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div class="container" id="container">
+    <!-- Signup Form -->
+    <div class="form-container sign-up-container">
+      <form id="signup-form">
+        <h1>Create Account</h1>
+        <div class="social-container">
+          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social"><i class="fab fa-google"></i></a>
+          <a href="#" class="social"><i class="fab fa-github"></i></a>
+        </div>
+        <span class="small-text">or use your email for registration</span>
+        <input type="text" id="signup-name" placeholder="Name" required />
+        <input type="email" id="signup-email" placeholder="Email" required />
+        <input type="password" id="signup-password" placeholder="Password" required />
+        <button type="submit"> Sign Up</a></button>
+        <div class="error-message" id="signup-error"></div>
+      </form>
+    </div>
+
+    <!-- Login Form -->
+    <div class="form-container sign-in-container">
+      <form id="login-form">
+        <h1>Sign In</h1>
+        <div class="social-container">
+          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social"><i class="fab fa-google"></i></a>
+          <a href="#" class="social"><i class="fab fa-github"></i></a>
+        </div>
+        <span class="small-text">or use your account</span>
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input type="password" id="login-password" placeholder="Password" required />
+        <a href="#" class="forgot">Forgot your password?</a>
+        <button type="submit">Sign In</button>
+        <div class="error-message" id="login-error"></div>
+      </form>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>Login to continue your emotional wellness journey</p>
+          <button class="ghost" id="signIn">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Join DreamWeaver AI!</h1>
+          <p>Create an account to explore your dreams and emotions</p>
+          <button class="ghost" id="signUp">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/animation.js"></script>
+  <script src="js/auth.js"></script>
+  <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'93a0b712bab853d4',t:'MTc0NjI4NTM0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+
+  <script>
+    // Replace the existing script with this:
+    document.getElementById('login-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const errorElement = document.getElementById('login-error');
+      try {
+        const response = await fetch('http://localhost:3000/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          window.location.href = `preferences.html?token=${data.token}`;
+        }
+
+        if (response.ok) {
+          window.location.href = `ChatUI.html?token=${data.token}`;
+        } else {
+          errorElement.textContent = data.message || 'Login failed';
+          errorElement.style.display = 'block';
+        }
+      } catch (err) {
+        errorElement.textContent = 'Network error. Please try again.';
+        errorElement.style.display = 'block';
+      }
+    });
+
+    document.getElementById('signup-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const errorElement = document.getElementById('signup-error');
+
+      try {
+        const response = await fetch('http://localhost:3000/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          window.location.href = `ChatUI.html?token=${data.token}`;
+        } else {
+          errorElement.textContent = data.message || 'Registration failed';
+          errorElement.style.display = 'block';
+        }
+      } catch (err) {
+        errorElement.textContent = 'Network error. Please try again.';
+        errorElement.style.display = 'block';
+      }
+    });
+
+    // Social login buttons
+    document.querySelectorAll('.social-container a').forEach(button => {
+      button.addEventListener('click', function (e) {
+        e.preventDefault();
+        const provider = this.querySelector('i').className.split(' ')[1].split('-')[1];
+        window.location.href = `http://localhost:3000/auth/${provider}`;
+      });
+    });
+
+
+
+  </script>
+</body>
+
+</html>
