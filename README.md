@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/samaypowade90/dream-weaver-assets/main/banner.png" alt="Dream Weaver Banner" width="100%">
+  <img src="https://i.imgur.com/YOUR_IMAGE_ID.png" alt="Dream Weaver Banner" width="100%">
 </p>
 
 <h1 align="center">🌙 Dream Weaver – Your Soulful AI Companion</h1>
