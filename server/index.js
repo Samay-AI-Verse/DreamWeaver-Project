@@ -18,6 +18,12 @@ const session = require('express-session');
 const app = express();
 const port = process.env.PORT || 3000;
 const responseCache = new NodeCache({ stdTTL: 3600 });
+// my workk demo
+
+
+
+
+
 
 // Validate environment variables
 const requiredEnvVars = [
